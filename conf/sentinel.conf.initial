@@ -1,0 +1,15 @@
+sentinel monitor redis1 redis1 6379 2
+sentinel down-after-milliseconds redis1 60000
+sentinel failover-timeout redis1 180000
+sentinel parallel-syncs redis1 1
+
+sentinel monitor redis2 redis2 6379 4
+sentinel down-after-milliseconds redis2 10000
+sentinel failover-timeout redis2 180000
+sentinel parallel-syncs redis2 5
+
+sentinel monitor redis3 redis3 6379 2
+sentinel down-after-milliseconds redis3 60000
+sentinel failover-timeout redis3 180000
+sentinel parallel-syncs redis3 1
+

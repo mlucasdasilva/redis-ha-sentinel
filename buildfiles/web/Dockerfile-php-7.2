@@ -1,0 +1,10 @@
+FROM php:7.2-apache
+
+RUN pecl channel-update pecl.php.net
+
+RUN pecl install redis-4.2.0 \
+    && docker-php-ext-enable redis
+
+VOLUME /var/www/html
+
+EXPOSE 80

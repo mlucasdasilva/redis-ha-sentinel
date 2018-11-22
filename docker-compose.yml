@@ -1,0 +1,67 @@
+version: '3.3'
+services:
+  web1:
+    image: mlucas/php:7.2-apache-redis
+    build:
+      context: buildfiles/web
+      dockerfile: Dockerfile-php-7.2
+    container_name: devweb1
+    ports:
+      - "8080:80"
+    links:
+      - sentinel1:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+  web2:
+    image: mlucas/php:7.2-apache-redis
+    container_name: devweb2
+    ports:
+      - "8180:80"
+    links:
+      - sentinel1:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+  web3:
+    image: mlucas/php:7.2-apache-redis
+    container_name: devweb3
+    ports:
+      - "8280:80"
+    links:
+      - sentinel1:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+  redis1:
+    image: redis:4.0.11-alpine
+    #build: buildfiles/cache
+    container_name: devcache1
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+  redis2:
+    image: redis:4.0.11-alpine
+    container_name: devcache2
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+  redis3:
+    image: redis:4.0.11-alpine
+    container_name: devcache3
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+  sentinel1:
+    image: redis:4.0.11-alpine
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-sentinel /usr/local/etc/redis/sentinel1.conf
+  sentinel2:
+    image: redis:4.0.11-alpine
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-sentinel /usr/local/etc/redis/sentinel2.conf
+  sentinel3:
+    image: redis:4.0.11-alpine
+    volumes:
+       - ./conf:/usr/local/etc/redis
+    command: redis-sentinel /usr/local/etc/redis/sentinel3.conf
+
